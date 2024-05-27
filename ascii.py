@@ -141,17 +141,35 @@ def line_format(line):
     w0 = COLOR_BLUE + line[0]
     w1 = COLOR_GREEN + line[1]
     w2 = COLOR_CREAM + line[2]
-    return " " + w0.ljust(19)+w1.ljust(24)+w2
+    return " " + w0.ljust(19) + w1.ljust(24) + w2
 
 
 def show_ascii():
-    print(COLOR_ORANGE+"-DEC-   -HEX-         -CHARACTER-".ljust(64) + "-DEC-   -HEX-         -CHAR-"+COLOR_RESET)
+    print(COLOR_ORANGE + "-DEC-   -HEX-         -CHARACTER-".ljust(64) + "-DEC-   -HEX-         -CHAR-" + COLOR_RESET)
     for i in range(64):
         print(line_format(ascii_data[i]).ljust(96), end='')
-        print(line_format(ascii_data[i+64]))
+        print(line_format(ascii_data[i + 64]))
+
+
+def search_ascii(character=''):
+    if character == '':
+        print(COLOR_ORANGE + "-DEC-   -HEX-         -CHAR-")
+        print(line_format(ascii_data[0]))
+        return
+    decimal = ord(character)
+    print(COLOR_ORANGE + "-DEC-   -HEX-         -CHAR-")
+    print(line_format(ascii_data[decimal]))
 
 
 if __name__ == '__main__':
-    param = input()
-    if param == '-sh' or param == '-show' or param.strip() == '':
-        show_ascii()
+    try:
+        if len(sys.argv) >= 2:
+            if sys.argv[1] == '--s' or sys.argv[1] == '-search':
+                if len(sys.argv) == 2:
+                    search_ascii()
+                else:
+                    search_ascii(sys.argv[2])
+        else:
+            show_ascii()
+    except Exception as e:
+        print(f"An error occurred: {e}")
